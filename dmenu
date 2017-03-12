@@ -1,0 +1,1 @@
+$(dmenu_path | dmenu -b -nb '#FFFFFF' -sb '#000000' -sf '#FFFFFF')

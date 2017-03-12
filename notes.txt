@@ -1,0 +1,3 @@
+notes:
+docker log nuke
+echo ""> $(docker inspect --format='{{.LogPath}}' b7780ba19f0d)
