@@ -1,3 +1,12 @@
 [submodule "bash-it"]
 	path = bash-it
 	url = git@github.com:Bash-it/bash-it.git
+[submodule "awesome/.config/awesome/lain"]
+	path = awesome/.config/awesome/lain
+	url = git@github.com:copycat-killer/lain.git
+[submodule "awesome/.config/awesome/tyrannical"]
+	path = awesome/.config/awesome/tyrannical
+	url = git@github.com:Elv13/tyrannical.git
+[submodule "awesome/.config/awesome/freedesktop"]
+	path = awesome/.config/awesome/freedesktop
+	url = git@github.com:copycat-killer/awesome-freedesktop.git
