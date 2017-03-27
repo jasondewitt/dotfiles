@@ -92,7 +92,7 @@ local separators = lain.util.separators
 -- Textclock
 local clockicon = wibox.widget.imagebox(theme.widget_clock)
 local clock = lain.widget.watch({
-    timeout  = 1,
+    timeout  = 60,
     cmd      = " date +'%a %d %b %r'",
     settings = function()
         widget:set_markup(" " .. markup.font(theme.font, output))
@@ -255,8 +255,7 @@ function theme.at_screen_connect(s)
     gears.wallpaper.maximized(theme.wallpaper, s, true)
 
     -- Tags
-    --awful.tag(awful.util.tagnames, s, awful.layout.layouts)
-    awful.tag(awful.util.tagnames, s, awful.layout.suit.floating)
+    awful.tag(awful.util.tagnames, s, awful.layout.layouts)
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()

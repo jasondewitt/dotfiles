@@ -10,3 +10,7 @@
 [submodule "awesome/.config/awesome/freedesktop"]
 	path = awesome/.config/awesome/freedesktop
 	url = git@github.com:copycat-killer/awesome-freedesktop.git
+
+[submodule "vim/.vim"]
+	path = vim/.vim
+	url = git@github.com:tpope/vim-pathogen.git

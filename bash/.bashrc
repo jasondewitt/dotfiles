@@ -37,3 +37,6 @@ export EDITOR=vim
 
 # set path
 export PATH=~/bin:$PATH
+
+TERM='rxvt-unicode'
+COLORTERM='rxvt-unicode-256color'
