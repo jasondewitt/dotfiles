@@ -38,5 +38,9 @@ export EDITOR=vim
 # set path
 export PATH=~/bin:$PATH
 
+export LC_ALL=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+
 TERM='rxvt-unicode'
 COLORTERM='rxvt-unicode-256color'

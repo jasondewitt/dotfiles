@@ -10,8 +10,6 @@
 [submodule "awesome/.config/awesome/freedesktop"]
 	path = awesome/.config/awesome/freedesktop
 	url = git@github.com:copycat-killer/awesome-freedesktop.git
-
-
 [submodule "vim/.vim/bundle/vim-airline"]
 	path = vim/.vim/bundle/vim-airline
 	url = git@github.com:vim-airline/vim-airline.git
@@ -21,3 +19,45 @@
 [submodule "vim/.vim/bundle/delimitMate"]
 	path = vim/.vim/bundle/delimitMate
 	url = git@github.com:Raimondi/delimitMate.git
+[submodule "worron/.config/awesome"]
+	path = worron/.config/awesome
+	url = https://github.com/worron/awesome-config.git
+[submodule "vim/.vim/bundle/vim-startify"]
+	path = vim/.vim/bundle/vim-startify
+	url = git@github.com:mhinz/vim-startify.git
+[submodule "vim/.vim/bundle/nerdtree"]
+	path = vim/.vim/bundle/nerdtree
+	url = git@github.com:scrooloose/nerdtree.git
+[submodule "vim/.vim/bundle/vim-nerdtree-tabs"]
+	path = vim/.vim/bundle/vim-nerdtree-tabs
+	url = git@github.com:jistr/vim-nerdtree-tabs.git
+[submodule "vim/.vim/bundle/syntastic"]
+	path = vim/.vim/bundle/syntastic
+	url = git@github.com:vim-syntastic/syntastic.git
+[submodule "vim/.vim/bundle/nerdtree-git-plugin"]
+	path = vim/.vim/bundle/nerdtree-git-plugin
+	url = git@github.com:Xuyuanp/nerdtree-git-plugin.git
+[submodule "vim/.vim/bundle/vim-misc"]
+	path = vim/.vim/bundle/vim-misc
+	url = git@github.com:xolox/vim-misc.git
+[submodule "vim/.vim/bundle/vim-easytags"]
+	path = vim/.vim/bundle/vim-easytags
+	url = git@github.com:xolox/vim-easytags.git
+[submodule "vim/.vim/bundle/vim-gitgutter"]
+	path = vim/.vim/bundle/vim-gitgutter
+	url = git@github.com:airblade/vim-gitgutter.git
+[submodule "vim/.vim/bundle/vim-fugitive"]
+	path = vim/.vim/bundle/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "vim/.vim/bundle/vim-tmux-navigator"]
+	path = vim/.vim/bundle/vim-tmux-navigator
+	url = git@github.com:christoomey/vim-tmux-navigator.git
+[submodule "vim/.vim/bundle/vim-colorschemes"]
+	path = vim/.vim/bundle/vim-colorschemes
+	url = git@github.com:flazz/vim-colorschemes.git
+[submodule "vim/.vim/bundle/ctrlp.vim"]
+	path = vim/.vim/bundle/ctrlp.vim
+	url = git@github.com:ctrlpvim/ctrlp.vim.git
+[submodule "vim/.vim/bundle/vim-test"]
+	path = vim/.vim/bundle/vim-test
+	url = git@github.com:janko-m/vim-test.git
