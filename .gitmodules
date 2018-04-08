@@ -1,15 +1,3 @@
-[submodule "bash-it"]
-	path = bash-it
-	url = git@github.com:Bash-it/bash-it.git
-[submodule "awesome/.config/awesome/lain"]
-	path = awesome/.config/awesome/lain
-	url = git@github.com:copycat-killer/lain.git
-[submodule "awesome/.config/awesome/tyrannical"]
-	path = awesome/.config/awesome/tyrannical
-	url = git@github.com:Elv13/tyrannical.git
-[submodule "awesome/.config/awesome/freedesktop"]
-	path = awesome/.config/awesome/freedesktop
-	url = git@github.com:copycat-killer/awesome-freedesktop.git
 [submodule "vim/.vim/bundle/vim-airline"]
 	path = vim/.vim/bundle/vim-airline
 	url = git@github.com:vim-airline/vim-airline.git
@@ -19,9 +7,6 @@
 [submodule "vim/.vim/bundle/delimitMate"]
 	path = vim/.vim/bundle/delimitMate
 	url = git@github.com:Raimondi/delimitMate.git
-[submodule "worron/.config/awesome"]
-	path = worron/.config/awesome
-	url = https://github.com/worron/awesome-config.git
 [submodule "vim/.vim/bundle/vim-startify"]
 	path = vim/.vim/bundle/vim-startify
 	url = git@github.com:mhinz/vim-startify.git
