@@ -61,3 +61,6 @@
 [submodule "vim/.vim/bundle/vim-test"]
 	path = vim/.vim/bundle/vim-test
 	url = git@github.com:janko-m/vim-test.git
+[submodule "submodules/liquidprompt"]
+	path = submodules/liquidprompt
+	url = https://github.com/nojhan/liquidprompt.git
