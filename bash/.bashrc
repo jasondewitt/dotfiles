@@ -1,4 +1,54 @@
 #!/usr/bin/env bash
+export LC_ALL=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+prompt_tag()
+{
+    PS1_PREFIX="$(_ins_sr "$1")"
+}
+
+# insert a space on the right
+_ins_sr()
+{
+    [[ -n "$1" ]] && echo -nE "$1 "
+}
+
+# insert a space on the left
+_ins_sl()
+{
+    [[ -n "$1" ]] && echo -nE " $1"
+}
+
+# insert two space, before and after
+_ins_sb()
+{
+    [[ -n "$1" ]] && echo -nE " $1 "
+}
+
+source "$HOME/.colors.sh"
+
+find_git_branch() {
+  # Based on: http://stackoverflow.com/a/13003854/170413
+  local branch
+  if branch=$(git rev-parse --abbrev-ref HEAD 2> /dev/null); then
+    if [[ "$branch" == "HEAD" ]]; then
+      branch='detached*'
+    fi
+    #git_branch="($branch)"
+    git_branch="${txtgitbranch} ${branch}${txtrst}"
+  else
+    git_branch=""
+  fi
+}
+
+find_git_dirty() {
+  local status=$(git status --porcelain 2> /dev/null)
+  if [[ "$status" != "" ]]; then
+    git_dirty='${txtgitdirty}*${txtrst}'
+  else
+    git_dirty=''
+  fi
+}
 
 ## better bash defaults from sensible bash https://github.com/mrzool/bash-sensible
 
@@ -71,6 +121,14 @@ shopt -s cdable_vars
 export dotfiles="$HOME/dotfiles"
 export dev="$HOME/dev"
 
+# add homedir bin
+export PATH=$HOME/bin:$PATH
+# add pipsi installed scripts to $PATH
+export PATH="$PATH:$HOME/.local/bin"
+# add composer vendor bin to path
+export PATH=~/.config/composer/vendor/bin:$PATH
+
+
 # Load aliases
 if [ -f ~/.aliases.sh ]; then
   source ~/.aliases.sh
@@ -85,6 +143,38 @@ if [[ -d $PYENV_ROOT ]];then
     # initialize pyenv virtualenv
     eval "$(pyenv virtualenv-init -)"
 fi
+
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+pyenvVirtualenvUpdatePrompt() {
+    RED='\[\e[0;31m\]'
+    GREEN='\[\e[0;32m\]'
+    BLUE='\[\e[0;34m\]'
+    RESET='\[\e[0m\]'
+    #[ -z "$PYENV_VIRTUALENV_ORIGINAL_PS1" ] && export PYENV_VIRTUALENV_ORIGINAL_PS1="$PS1"
+    [ -z "$PYENV_VIRTUALENV_GLOBAL_NAME" ] && export PYENV_VIRTUALENV_GLOBAL_NAME="$(pyenv global)"
+    VENV_NAME="$(pyenv version-name)"
+    VENV_NAME="${VENV_NAME##*/}"
+    GLOBAL_NAME="$PYENV_VIRTUALENV_GLOBAL_NAME"
+
+    # non-global versions:
+    COLOR="$BLUE"
+    # global version:
+    [ "$VENV_NAME" == "$GLOBAL_NAME" ] && COLOR="$RED"
+    # virtual envs:
+    [ "${VIRTUAL_ENV##*/}" == "$VENV_NAME" ] && COLOR="$GREEN"
+
+
+    export PYENV_PROMPT="($COLOR${VENV_NAME}$RESET) "
+    #export PYENV_PROMPT="hello"
+ #   if [ -z "$COLOR" ]; then
+ #       PS1="$PYENV_VIRTUALENV_ORIGINAL_PS1"
+ #   else
+ #       PS1="($COLOR${VENV_NAME}$RESET)$PYENV_VIRTUALENV_ORIGINAL_PS1"
+ #   fi
+ #   export PS1
+}
+PROMPT_COMMAND="pyenvVirtualenvUpdatePrompt; $PROMPT_COMMAND"
+
 
 # set up node version manager stuff
 export NVM_DIR="$HOME/.nvm"
@@ -101,34 +191,27 @@ if [ -d "$HOME/gocode" ]; then
 fi
 
 # complete :allthethings:
-# shellcheck disable=SC1090
+if [ -f /etc/bash_completion ];
+then
+    source /etc/bash_completion
+fi
 source "$dotfiles/bash-complete/git-completion.bash"
 source "$dotfiles/bash-complete/docker-compose-completion.bash"
 [ -x "$(command -v kubectl)" ]; source <(kubectl completion bash)
 source ~/.pyenv/completions/pyenv.bash
 
-export LC_ALL=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-
-TERM='rxvt-unicode'
+TERM='rxvt-unicode-256color'
 COLORTERM='rxvt-unicode-256color'
 
-# add homedir bin
-export PATH=$HOME/bin:$PATH
-# add pipsi installed scripts to $PATH
-export PATH="$PATH:$HOME/.local/bin"
-# add composer vendor bin to path
-export PATH=~/.config/composer/vendor/bin:$PATH
-# powerline prompt
-#powerline-daemon -q
-#POWERLINE_BASH_CONTINUATION=1
-#POWERLINE_BASH_SELECT=1
-#source "$HOME/.local/venvs/powerline-status/lib/python3.5/site-packages/powerline/bindings/bash/powerline.sh"
 
-[[ $- = *i* ]] && source "$dotfiles/submodules/liquidprompt/liquidprompt"
+#export GITAWAREPROMPT="/home/jason/dotfiles/submodules/git-aware-prompt"
+#source "${GITAWAREPROMPT}/main.sh"
+# no liquid prompt sooooo slow on git repos
+#[[ $- = *i* ]] && source "$dotfiles/submodules/liquidprompt/liquidprompt"
+#[[ $- = *i* ]] && source "$dotfiles/submodules/polyglot/polyglot.sh"
 
+# aws utilities
 [ -f "$HOME/aws/alises.sh" ]; source "$HOME/aws/aliases.sh"
-
 awscreds() {
     if [ -z "$*" ]
     then
@@ -136,7 +219,7 @@ awscreds() {
     else
         if [ -f "$HOME/aws/creds/$1" ] && [[ $1 != "unset" ]]
         then
-            prompt_tag "\033[38;5;208m${1}\033[0m"
+            prompt_tag "${txtaws}${1}${txtrst}"
             source "$HOME/aws/creds/$1"
         else
             unset AWS_ACCESS_KEY_ID
@@ -145,3 +228,14 @@ awscreds() {
         fi
     fi
 }
+
+# git prompt
+PROMPT_COMMAND="find_git_branch; find_git_dirty; $PROMPT_COMMAND"
+
+#PS1="\[\033[32m\]\t \u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
+#export PS1="${txtcyn}${git_branch}${txtred}${git_dirty}${txtrst} $ "
+
+_set_prompt () {
+    PS1="${PS1_PREFIX}${PYENV_PROMPT}\w ${git_branch}${git_dirty}> "
+}
+PROMPT_COMMAND="$PROMPT_COMMAND ; _set_prompt"
