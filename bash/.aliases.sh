@@ -6,7 +6,6 @@ alias e='exit'
 
 alias -- -='cd -'
 
-alias ls="ls --color=always"
 alias lsd="ls -lF --color | grep --color=never '^d'"
 
 alias notebook="cd ~/notebooks && jupyter-notebook"

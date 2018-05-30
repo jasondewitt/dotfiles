@@ -1,0 +1,2 @@
+# macos bash doesnt seem to like this one
+alias ls="ls --color=always"
