@@ -148,6 +148,12 @@ if [ -f ~/.aliases.sh ]; then
   source ~/.aliases.sh
 fi
 
+if [[ "$OSTYPE" == "darwin"* ]] && [[ -f ~/.bashrc.macos ]]; then
+    source ~/.bashrc.macos
+elif [[ "$OSTYPE" == "linux-gnu" ]] && [[ -f ~/.bashrc.linux-gnu ]]; then
+    source ~/.bashrc.linux-gnu
+fi
+
 # set up pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 if [[ -d $PYENV_ROOT ]];then
