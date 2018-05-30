@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# A rofi demu style confirmation prompt script.
+# Gives a rofi prompt labeled with $1 to perform command $2.
+# For example:
+# `./confirm "Do you want to shutdown?" "shutdown -h now"`
+[ $(echo -e "No\nYes" | rofi show -dmenu -i -p "$1") == "Yes" ] && $2

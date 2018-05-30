@@ -35,7 +35,7 @@ find_git_branch() {
       branch='detached*'
     fi
     #git_branch="($branch)"
-    git_branch="${txtgitbranch} ${branch}${txtrst}"
+    git_branch="\[${txtgitbranch}\] ${branch}\[${txtrst}\]"
   else
     git_branch=""
   fi
@@ -44,11 +44,23 @@ find_git_branch() {
 find_git_dirty() {
   local status=$(git status --porcelain 2> /dev/null)
   if [[ "$status" != "" ]]; then
-    git_dirty='${txtgitdirty}*${txtrst}'
+    git_dirty='\[${txtgitdirty}\]*\[${txtrst}\]'
   else
     git_dirty=''
   fi
 }
+find_git_stash() {
+    local stash=$(git stash list 2> /dev/null | wc -l)
+    if [ $stash -ne 0 ];
+    then
+        export git_stash=$(_ins_sb "\[${txtylw}\]{$stash}\[${txtrst}\]")
+    else
+        export git_stash=""
+    fi
+}
+
+# git prompt
+PROMPT_COMMAND="find_git_branch; find_git_dirty; find_git_stash"
 
 ## better bash defaults from sensible bash https://github.com/mrzool/bash-sensible
 
@@ -84,14 +96,14 @@ shopt -s histappend
 # Save multi-line commands as one command
 shopt -s cmdhist
 # Record each line as it gets issued
-PROMPT_COMMAND='history -a'
+PROMPT_COMMAND="$PROMPT_COMMAND; history -a"
 # Huge history. Doesn't appear to slow things down, so why not?
 HISTSIZE=500000
 HISTFILESIZE=100000
 # Avoid duplicate entries
 HISTCONTROL="erasedups:ignoreboth"
 # Don't record some commands
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear:refresh"
 # Use standard ISO 8601 timestamp
 # %F equivalent to %Y-%m-%d
 # %T equivalent to %H:%M:%S (24-hours format)
@@ -123,6 +135,8 @@ export dev="$HOME/dev"
 
 # add homedir bin
 export PATH=$HOME/bin:$PATH
+# add stow'd dotfiles scripts dir
+export PATH="$PATH:$HOME/scripts"
 # add pipsi installed scripts to $PATH
 export PATH="$PATH:$HOME/.local/bin"
 # add composer vendor bin to path
@@ -146,32 +160,16 @@ fi
 
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 pyenvVirtualenvUpdatePrompt() {
-    RED='\[\e[0;31m\]'
-    GREEN='\[\e[0;32m\]'
-    BLUE='\[\e[0;34m\]'
-    RESET='\[\e[0m\]'
-    #[ -z "$PYENV_VIRTUALENV_ORIGINAL_PS1" ] && export PYENV_VIRTUALENV_ORIGINAL_PS1="$PS1"
     [ -z "$PYENV_VIRTUALENV_GLOBAL_NAME" ] && export PYENV_VIRTUALENV_GLOBAL_NAME="$(pyenv global)"
     VENV_NAME="$(pyenv version-name)"
     VENV_NAME="${VENV_NAME##*/}"
-    GLOBAL_NAME="$PYENV_VIRTUALENV_GLOBAL_NAME"
 
-    # non-global versions:
-    COLOR="$BLUE"
-    # global version:
-    [ "$VENV_NAME" == "$GLOBAL_NAME" ] && COLOR="$RED"
-    # virtual envs:
-    [ "${VIRTUAL_ENV##*/}" == "$VENV_NAME" ] && COLOR="$GREEN"
-
-
-    export PYENV_PROMPT="($COLOR${VENV_NAME}$RESET) "
-    #export PYENV_PROMPT="hello"
- #   if [ -z "$COLOR" ]; then
- #       PS1="$PYENV_VIRTUALENV_ORIGINAL_PS1"
- #   else
- #       PS1="($COLOR${VENV_NAME}$RESET)$PYENV_VIRTUALENV_ORIGINAL_PS1"
- #   fi
- #   export PS1
+    if [ "$VENV_NAME" != "$PYENV_VIRTUALENV_GLOBAL_NAME" ]
+    then
+        export PYENV_PROMPT="(\[$txtblu\]${VENV_NAME}\[$txtrst\]) "
+    else
+        export PYENV_PROMPT=""
+    fi
 }
 PROMPT_COMMAND="pyenvVirtualenvUpdatePrompt; $PROMPT_COMMAND"
 
@@ -195,47 +193,40 @@ if [ -f /etc/bash_completion ];
 then
     source /etc/bash_completion
 fi
-source "$dotfiles/bash-complete/git-completion.bash"
-source "$dotfiles/bash-complete/docker-compose-completion.bash"
+# source all custom completions in bash-complete
+for f in $dotfiles/bash-complete.d/*.bash; do source $f; done
 [ -x "$(command -v kubectl)" ]; source <(kubectl completion bash)
 source ~/.pyenv/completions/pyenv.bash
 
-TERM='rxvt-unicode-256color'
+TERM='xterm-256color'
 COLORTERM='rxvt-unicode-256color'
-
-
-#export GITAWAREPROMPT="/home/jason/dotfiles/submodules/git-aware-prompt"
-#source "${GITAWAREPROMPT}/main.sh"
-# no liquid prompt sooooo slow on git repos
-#[[ $- = *i* ]] && source "$dotfiles/submodules/liquidprompt/liquidprompt"
-#[[ $- = *i* ]] && source "$dotfiles/submodules/polyglot/polyglot.sh"
 
 # aws utilities
 [ -f "$HOME/aws/alises.sh" ]; source "$HOME/aws/aliases.sh"
+
 awscreds() {
+    ## function to import diffrent AWS access keys into the shell envrionment
+    ## assumes files for the different AWS accounts exist in ~/aws/creds
+    ## which export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY variables
+    ## running `awscreds unset` will remove these variables to unset the credentials
     if [ -z "$*" ]
     then
         ls -1 "$HOME/aws/creds"
     else
         if [ -f "$HOME/aws/creds/$1" ] && [[ $1 != "unset" ]]
         then
-            prompt_tag "${txtaws}${1}${txtrst}"
+            prompt_tag "\[${txtaws}\]${1}\[${txtrst}\]"
             source "$HOME/aws/creds/$1"
         else
             unset AWS_ACCESS_KEY_ID
             unset AWS_SECRET_ACCESS_KEY
+            unset AWS_DEFAULT_EGION
             prompt_tag
         fi
     fi
 }
 
-# git prompt
-PROMPT_COMMAND="find_git_branch; find_git_dirty; $PROMPT_COMMAND"
-
-#PS1="\[\033[32m\]\t \u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
-#export PS1="${txtcyn}${git_branch}${txtred}${git_dirty}${txtrst} $ "
-
 _set_prompt () {
-    PS1="${PS1_PREFIX}${PYENV_PROMPT}\w ${git_branch}${git_dirty}> "
+    PS1="${PS1_PREFIX}${PYENV_PROMPT}\w ${git_branch}${git_dirty}${git_stash}> "
 }
 PROMPT_COMMAND="$PROMPT_COMMAND ; _set_prompt"

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+## reload :allthethings:
+
+pushd ~/.config/i3/ || exit;
+sed '/^[[:space:]]*# *default_keys/r config.default_keys' config.base > config
+popd
+
+i3-msg reload
+xrdb -merge -I$HOME ~/.Xresources && echo "${txtgrn}Xresources reloaded...${txtrst}"
+
+kill $(pidof compton) && compton -b --config ~/.config/compton/compton.conf
