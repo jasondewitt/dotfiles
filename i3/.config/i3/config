@@ -48,9 +48,10 @@ client.background       $base07
 #workspace_auto_back_and_forth yes
 
 exec_always --no-startup-id ~/.config/i3/focus.py > test.log 2>&1
-exec_always --no-startup-id "compton -b --config ~/.config/compton/compton.conf"
+exec_always --no-startup-id /usr/bin/compton -b --config ~/.config/compton/compton.conf
 exec_always --no-startup-id /usr/bin/dunst -config ~/.config/dunst/dunstrc
-
+exec_always --no-startup-id /usr/bin/google-chrome-stable --app=http://10up.harvestapp.com -n harvest >> ~/harvest.log
+exec_always --no-startup-id $term -n dropdown >> ~/dropdown.log
 
 set $monitor1 "DP-4"
 set $monitor2 "DP-2"
@@ -236,7 +237,7 @@ bindsym $hyper+d "exec amixer set Master -q 5%- && pkill -RTMIN+10 i3blocks"
 
 # open harvest scratchpad
 bindsym $hyper+t [instance="harvest"] scratchpad show; [instance="harvest"] move position center
-bindsym $mod+o [instance="dropdowh"] scratchpad show; [instance="dropdown"] move position center
+bindsym $mod+o [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
 
 
 
@@ -379,7 +380,7 @@ bindsym $hyper+d "exec amixer set Master -q 5%- && pkill -RTMIN+10 i3blocks"
 
 # open harvest scratchpad
 bindsym $hyper+t [instance="harvest"] scratchpad show; [instance="harvest"] move position center
-bindsym $mod+o [instance="dropdowh"] scratchpad show; [instance="dropdown"] move position center
+bindsym $mod+o [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
 
 
 
@@ -425,8 +426,8 @@ smart_gaps on
 #smart_borders on
 
 # Set inner/outer gaps
-gaps inner 20
-gaps outer 20
+gaps inner 15
+gaps outer 10
 
 # First I have a tmux window used for background scripts.
 # I'll later bind this to mod+u.
@@ -440,5 +441,4 @@ for_window [instance="dropdown"] move scratchpad
 for_window [instance="dropdown"] border pixel 5
 # Runs the tmuxinit script, which searches for an earlier tmux instance,
 # otherwise starts a new one (to prevent multiple dropdown sessions).
-exec --no-startup-id google-chrome --app=http://10up.harvestapp.com -n harvest
-exec --no-startup-id $term -n dropdown
+

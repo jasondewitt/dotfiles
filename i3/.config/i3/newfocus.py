@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/home/jason/.pyenv/versions/base/bin/python
 
 import i3ipc
 import json

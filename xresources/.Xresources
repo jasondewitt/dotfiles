@@ -1,7 +1,7 @@
 #include ".colors/base16-material-darker-256"
 
 Xft.dpi: 96
-
+Xcursor.size: 16
 URxvt.background:       [60]#000000
 URxvt.depth:            32
 URxvt.font:             xft:SauceCodePro Nerd Font:Medium:size=12

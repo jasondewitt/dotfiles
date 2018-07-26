@@ -8,7 +8,7 @@ alias -- -='cd -'
 
 alias lsd="ls -lF --color | grep --color=never '^d'"
 
-alias notebook="cd ~/notebooks && jupyter-notebook"
+alias notebook="cd ~/notebooks && jupyter notebook"
 alias dig="dig +noall +answer"
 
 # show only the headers without doing a HEAD request
@@ -29,4 +29,8 @@ function sslinfofull () {
 
 function sslsiteinfofull () {
   echo | openssl s_client -connect $1:443 -servername $1 2>/dev/null | openssl x509 -noout -text
+}
+
+function lh () {
+  docker run -t -v $PWD:/home/lighthouse lighthouse-debian lighthouse $1 --output json --output html
 }

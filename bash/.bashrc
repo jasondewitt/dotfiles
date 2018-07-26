@@ -236,3 +236,18 @@ _set_prompt () {
     PS1="${PS1_PREFIX}${PYENV_PROMPT}\w ${git_branch}${git_dirty}${git_stash}> "
 }
 PROMPT_COMMAND="$PROMPT_COMMAND ; _set_prompt"
+
+# add istio install to path
+export PATH="$PATH:$HOME/istio-0.8.0/bin"
+ 
+#export ANSIBLE_CALLBACK_PLUGINS=/home/jason/.pyenv/versions/3.6.6/lib/python3.6/site-packages/ara/plugins/callbacks
+#export ANSIBLE_ACTION_PLUGINS=/home/jason/.pyenv/versions/3.6.6/lib/python3.6/site-packages/ara/plugins/actions
+#export ANSIBLE_LIBRARY=/home/jason/.pyenv/versions/3.6.6/lib/python3.6/site-packages/ara/plugins/modules
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[ -f /home/jason/.nvm/versions/node/v10.6.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash ] && . /home/jason/.nvm/versions/node/v10.6.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.bash
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[ -f /home/jason/.nvm/versions/node/v10.6.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash ] && . /home/jason/.nvm/versions/node/v10.6.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash

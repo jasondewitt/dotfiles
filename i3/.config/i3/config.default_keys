@@ -98,6 +98,6 @@ bindsym $hyper+d "exec amixer set Master -q 5%- && pkill -RTMIN+10 i3blocks"
 
 # open harvest scratchpad
 bindsym $hyper+t [instance="harvest"] scratchpad show; [instance="harvest"] move position center
-bindsym $mod+o [instance="dropdowh"] scratchpad show; [instance="dropdown"] move position center
+bindsym $mod+o [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
 
 
