@@ -1,0 +1,5 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =3
+let g:netrw_dirhist_3='/home/jason/wp-local-docker-sites/testsite-test/wordpress/wp-content/.git'
+let g:netrw_dirhist_2='/home/jason/work/testing/cdcr/.git'
+let g:netrw_dirhist_1='/home/jason/wp-local-docker-sites/newtest-test/wordpress/wp-content/.git'

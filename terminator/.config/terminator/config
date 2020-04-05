@@ -9,6 +9,7 @@
   title_use_system_font = False
 [keybindings]
   copy = <Primary>p
+  help = F12
   paste = <Primary>v
 [layouts]
   [[default]]
@@ -21,14 +22,13 @@
 [plugins]
 [profiles]
   [[default]]
-    background_darkness = 0.71
+    background_darkness = 0.8
     background_type = transparent
-    palette = "#2d2d2d:#f2777a:#99cc99:#ffcc66:#6699cc:#cc99cc:#66cccc:#d3d0c8:#747369:#f2777a:#99cc99:#ffcc66:#6699cc:#cc99cc:#66cccc:#f2f0ec"
-    #background_color = "#2d2d2d"
     cursor_color = "#d3d0c8"
+    font = Fira Code weight=453 12
     foreground_color = "#d3d0c8"
-    font = SauceCodePro Nerd Font Medium 12
     icon_bell = False
+    palette = "#2d2d2d:#f2777a:#99cc99:#ffcc66:#6699cc:#cc99cc:#66cccc:#d3d0c8:#747369:#f2777a:#99cc99:#ffcc66:#6699cc:#cc99cc:#66cccc:#f2f0ec"
     scrollback_infinite = True
     scrollbar_position = hidden
     show_titlebar = False

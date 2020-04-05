@@ -27,6 +27,8 @@ _ins_sb()
 
 source "$HOME/.colors.sh"
 
+export TOOLS_PATH="${HOME}/.tool-repos/"
+
 find_git_branch() {
   # Based on: http://stackoverflow.com/a/13003854/170413
   local branch
@@ -59,7 +61,7 @@ find_git_stash() {
     fi
 }
 
-# git prompt
+# git promp
 PROMPT_COMMAND="find_git_branch; find_git_dirty; find_git_stash"
 
 ## better bash defaults from sensible bash https://github.com/mrzool/bash-sensible
@@ -135,6 +137,8 @@ export dev="$HOME/dev"
 
 # add homedir bin
 export PATH=$HOME/bin:$PATH
+# add composer bin dir to path
+export PATH=$PATH:~/.composer/vendor/bin/
 # add stow'd dotfiles scripts dir
 export PATH="$PATH:$HOME/scripts"
 # add pipsi installed scripts to $PATH
@@ -164,7 +168,7 @@ if [[ -d $PYENV_ROOT ]];then
     eval "$(pyenv virtualenv-init -)"
 fi
 
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+export PYENV_VIRTUALENV_DISABLE_PROMPT=0
 pyenvVirtualenvUpdatePrompt() {
     [ -z "$PYENV_VIRTUALENV_GLOBAL_NAME" ] && export PYENV_VIRTUALENV_GLOBAL_NAME="$(pyenv global)"
     VENV_NAME="$(pyenv version-name)"
@@ -204,8 +208,8 @@ for f in $dotfiles/bash-complete.d/*.bash; do source $f; done
 [ -x "$(command -v kubectl)" ]; source <(kubectl completion bash)
 source ~/.pyenv/completions/pyenv.bash
 
-TERM='xterm-256color'
-COLORTERM='rxvt-unicode-256color'
+#TERM='xterm-256color'
+#COLORTERM='rxvt-unicode-256color'
 
 # aws utilities
 [ -f "$HOME/aws/alises.sh" ]; source "$HOME/aws/aliases.sh"
@@ -232,18 +236,22 @@ awscreds() {
     fi
 }
 
+source ${TOOLS_PATH}kube-ps1/kube-ps1.sh
+_k8s_prompt () {
+    export K8S_PROMPT=$(kube_ps1)
+}
+PROMPT_COMMAND="${PROMPT_COMMAND}; _k8s_prompt"
+
 _set_prompt () {
-    PS1="${PS1_PREFIX}${PYENV_PROMPT}\w ${git_branch}${git_dirty}${git_stash}> "
+    PS1="${PS1_PREFIX}${K8S_PROMPT}${PYENV_PROMPT}\w ${git_branch}${git_dirty}${git_stash}\[${txtred}\]>\[${txtrst}\]\[${txtgrn}\]>\[${txtrst}\]\[${txtblu}\]>\[${txtrst}\] "
 }
 PROMPT_COMMAND="$PROMPT_COMMAND ; _set_prompt"
 
-# add istio install to path
-export PATH="$PATH:$HOME/istio-0.8.0/bin"
  
-#export ANSIBLE_CALLBACK_PLUGINS=/home/jason/.pyenv/versions/3.6.6/lib/python3.6/site-packages/ara/plugins/callbacks
-#export ANSIBLE_ACTION_PLUGINS=/home/jason/.pyenv/versions/3.6.6/lib/python3.6/site-packages/ara/plugins/actions
-#export ANSIBLE_LIBRARY=/home/jason/.pyenv/versions/3.6.6/lib/python3.6/site-packages/ara/plugins/modules
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+## restore pywal colors for terms
+(cat ~/.cache/wal/sequences &)
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
@@ -251,3 +259,16 @@ export PATH="$PATH:$HOME/istio-0.8.0/bin"
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
 [ -f /home/jason/.nvm/versions/node/v10.6.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash ] && . /home/jason/.nvm/versions/node/v10.6.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.bash
+
+# add gem bin to path
+export PATH=$PATH:$HOME/.gem/ruby/2.5.0/bin
+
+# kubectl config
+#export KUBECONFIG="$HOME/.kube/k8s-jasondewitt-dev-kubeconfig.yaml:$DENNIS_KUBE_DIR/dennis-prod.yaml:$DENNIS_KUBE_DIR/dennis-preprod.yaml:$DENNIS_KUBE_DIR/dennis-dev.yaml:$DENNIS_KUBE_DIR/dennis-stage.yaml"
+export KUBECONFIG="$HOME/.kube/config"
+
+# added by travis gem
+[ -f /home/jason/.travis/travis.sh ] && source /home/jason/.travis/travis.sh
+
+# enable direnv, installed from AUR
+eval "$(direnv hook bash)"

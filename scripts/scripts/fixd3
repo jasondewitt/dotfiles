@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+cd /home/jason/Games/diablo-iii/drive_c/windows/system32 || exit
+rm d3d11.dll
+rm dxgi.dll
+cd /home/jason/Games/diablo-iii/drive_c/windows/syswow64/ || exit
+rm dxgi.dll
+rm d3d11.dll
+

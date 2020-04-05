@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+warn () {
+    echo "$0:" "$@" >&2
+}
+die () {
+    rc=$1
+    shift
+    warn "$@"
+    exit $rc
+}
+
+cd ~/mnt/wow || die 1 "can't change to wow directory"
+if [[ ! -f Wow.exe ]]; then die 1 "wow directory not mounted"; fi
+
+rsync -vtrx --delete --exclude WTF/ --exclude Interface/AddOns . /home/jason/game-files/World\ of\ Warcraft/

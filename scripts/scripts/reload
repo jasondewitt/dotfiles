@@ -8,4 +8,5 @@ popd
 i3-msg reload
 xrdb -merge -I$HOME ~/.Xresources && echo "${txtgrn}Xresources reloaded...${txtrst}"
 
-kill $(pidof compton) && compton -b --config ~/.config/compton/compton.conf
+if $(pidof compton); then kill $(pidof compton); fi 
+compton -b --config ~/.config/compton/compton.conf

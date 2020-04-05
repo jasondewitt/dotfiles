@@ -1,4 +1,4 @@
-#!/home/jason/.pyenv/versions/base/bin/python
+#!/home/jason/.pyenv/versions/3.6.6/bin/python
 
 import i3ipc
 import json
@@ -12,9 +12,10 @@ def on_focus(i3, e):
     ws_list = i3.get_workspaces()
     for ws in ws_list:
         if ws.name == current_ws_name:
+            print(ws.output)
             if ws.output == 'DP-4':
                 i3.command("mode default")
-            elif ws.output == 'DP-2':
+            elif ws.output == 'DP-0':
                 i3.command('mode monitor2')
             else:
                 i3.command('mode default')
